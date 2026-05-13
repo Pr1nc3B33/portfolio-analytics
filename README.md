@@ -19,8 +19,8 @@ Each metric is unit-tested.
 
 ## Roadmap
 
-- [ ] Sharpe Ratio (combines return and volatility into a risk-adjusted score)
-- [ ] Max Drawdown (largest peak-to-trough decline)
+- [x] Sharpe Ratio (combines return and volatility into a risk-adjusted score)
+- [x] Max Drawdown (largest peak-to-trough decline)
 - [ ] Live market data integration via yfinance
 - [ ] Beta and Alpha calculations
 - [ ] Performance visualizations
