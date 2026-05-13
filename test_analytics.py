@@ -1,4 +1,4 @@
-from analytics import total_return, annualized_return, annualized_volatility
+from analytics import total_return, annualized_return, annualized_volatility, sharpe_ratio, max_drawdown
 import pytest
 
 
@@ -57,8 +57,39 @@ def test_annualized_volatility_too_short_error():
 
 def test_annualized_volatility_empty_error():
     with pytest.raises(ValueError):
-        annualized_volatility([])     
+        annualized_volatility([])    
 
+
+def test_sharpe_ratio_known_value():
+    result = sharpe_ratio(100, 200, 1, [0.01, - 0.005, 0.02, -0.01, 0.015], 0)
+    assert result == pytest.approx(4.88, rel=0.01)
+
+
+def test_sharpe_ratio_decreases_with_higher_risk_free_rate():
+    daily = [0.01, -0.005, 0.02, -0.01, 0.015]
+    sharpe_low = sharpe_ratio(100, 200, 1, daily, 0.02)
+    sharpe_high = sharpe_ratio(100, 200, 1, daily, 0.10)
+    assert sharpe_low > sharpe_high
+
+
+def test_sharpe_ratio_zero_volatility_raises():
+    with pytest.raises(ValueError):
+        sharpe_ratio(100, 200, 1, [0.01, 0.01, 0.01], 0)    
+
+
+def test_max_drawdown_known_case():
+    result = max_drawdown([100, 120, 60, 80])
+    assert result == -0.5
+
+
+def test_max_drawdown_zero_when_only_rising():
+    result = max_drawdown([100, 110, 120, 130])
+    assert result == 0
+
+
+def test_max_drawdown_too_few_prices_raises():
+    with pytest.raises(ValueError):
+        max_drawdown([100])                
 
 
 
